@@ -518,11 +518,13 @@
 			"revisionTime": "2016-10-03T17:45:16Z"
 		},
 		{
-			"checksumSHA1": "/iig5lYSPCL3C8J7e4nTAevYNDE=",
+			"checksumSHA1": "zRjEBBbLNC6YHE4ozqcr4OsvfVg=",
 			"comment": "v0.2.0-8-g841842b",
 			"path": "github.com/nesv/go-dynect/dynect",
-			"revision": "2dc6a86cf75ce4b33516d2a13c9c0c378310cf3b",
-			"revisionTime": "2016-04-25T23:31:34Z"
+			"revision": "8ccd652e67c545e82bf455cf84ca0cd783b69767",
+			"revisionTime": "2017-06-05T13:56:06Z",
+			"version": "v0.5.1",
+			"versionExact": "v0.5.1"
 		},
 		{
 			"checksumSHA1": "u5s2PZ7fzCOqQX7bVPf9IJ+qNLQ=",

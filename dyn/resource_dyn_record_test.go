@@ -3,6 +3,7 @@ package dyn
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform/helper/resource"
@@ -30,6 +31,31 @@ func TestAccDynRecord_Basic(t *testing.T) {
 						"dyn_record.foobar", "zone", zone),
 					resource.TestCheckResourceAttr(
 						"dyn_record.foobar", "value", "192.168.0.10"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccDynRecord_noTTL(t *testing.T) {
+	var record dynect.Record
+	zone := os.Getenv("DYN_ZONE")
+	integerRe := regexp.MustCompile("^[0-9]+$")
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDynRecordDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: fmt.Sprintf(testAccCheckDynRecordConfig_noTTL, zone),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDynRecordExists("dyn_record.foobar", &record),
+					testAccCheckDynRecordAttributes(&record),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "name", "terraform"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "zone", zone),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "value", "192.168.0.10"),
+					resource.TestMatchResourceAttr("dyn_record.foobar", "ttl", integerRe),
 				),
 			},
 		},
@@ -236,4 +262,12 @@ resource "dyn_record" "foobar3" {
 	value = "192.168.2.10"
 	type = "A"
 	ttl = 3600
+}`
+
+const testAccCheckDynRecordConfig_noTTL = `
+resource "dyn_record" "foobar" {
+	zone = "%s"
+	name = "terraform"
+	value = "192.168.0.10"
+	type = "A"
 }`

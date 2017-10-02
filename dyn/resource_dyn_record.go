@@ -50,7 +50,7 @@ func resourceDynRecord() *schema.Resource {
 			"ttl": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
-				Default:  "0", // 0 means use zone default
+				Computed: true,
 			},
 		},
 	}

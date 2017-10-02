@@ -1,4 +1,9 @@
 ## 0.1.1 (Unreleased)
+
+BUG FIXES:
+
+* resource/dyn_record: Avoid diff for default TTL [GH-12]
+
 ## 0.1.0 (June 20, 2017)
 
 NOTES:

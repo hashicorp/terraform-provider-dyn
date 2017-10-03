@@ -3,6 +3,7 @@ package dyn
 import (
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 
 	"github.com/hashicorp/terraform/helper/schema"
@@ -45,6 +46,19 @@ func resourceDynRecord() *schema.Resource {
 			"value": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				DiffSuppressFunc: func(k, oldV, newV string, d *schema.ResourceData) bool {
+					if d.Get("type").(string) == "CNAME" {
+						// We expect FQDN here, which may or may not have a trailing dot
+						if !strings.HasSuffix(oldV, ".") {
+							oldV += "."
+						}
+						if !strings.HasSuffix(newV, ".") {
+							newV += "."
+						}
+					}
+
+					return oldV == newV
+				},
 			},
 
 			"ttl": &schema.Schema{

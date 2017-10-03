@@ -9,6 +9,7 @@ BUG FIXES:
 * resource/dyn_record: Avoid diff for default TTL [GH-12]
 * resource/dyn_record: Ignore trailing dot in FQDN [GH-13]
 * resource/dyn_record: Support records for top level domain [GH-14]
+* resource/dyn_record: Fix broken record update [GH-17]
 
 ## 0.1.0 (June 20, 2017)
 

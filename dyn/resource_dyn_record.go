@@ -28,7 +28,7 @@ func resourceDynRecord() *schema.Resource {
 
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
 				ForceNew: true,
 				DiffSuppressFunc: func(k, oldV, newV string, d *schema.ResourceData) bool {
 					// Records for top level domain

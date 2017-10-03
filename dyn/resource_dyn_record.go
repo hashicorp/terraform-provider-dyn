@@ -56,7 +56,8 @@ func resourceDynRecord() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 				DiffSuppressFunc: func(k, oldV, newV string, d *schema.ResourceData) bool {
-					if d.Get("type").(string) == "CNAME" {
+					recordType := d.Get("type").(string)
+					if recordType == "CNAME" || recordType == "NS" || recordType == "MX" {
 						// We expect FQDN here, which may or may not have a trailing dot
 						if !strings.HasSuffix(oldV, ".") {
 							oldV += "."

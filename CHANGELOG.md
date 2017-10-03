@@ -1,5 +1,9 @@
 ## 0.1.1 (Unreleased)
 
+IMPROVEMENTS:
+
+* resource/dyn_record: Add support for `NS` & `MX` records [GH-15]
+
 BUG FIXES:
 
 * resource/dyn_record: Avoid diff for default TTL [GH-12]

@@ -1,3 +1,4 @@
+## 1.0.1 (Unreleased)
 ## 1.0.0 (October 03, 2017)
 
 IMPROVEMENTS:

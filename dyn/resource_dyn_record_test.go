@@ -380,7 +380,6 @@ resource "dyn_record" "foobar" {
 const testAccCheckDynRecordConfig_topLevelDomain = `
 resource "dyn_record" "foobar" {
   zone = "%s"
-  name = ""
   ttl  = 90
   type  = "A"
   value = "127.0.0.1"

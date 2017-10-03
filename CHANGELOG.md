@@ -3,6 +3,7 @@
 BUG FIXES:
 
 * resource/dyn_record: Avoid diff for default TTL [GH-12]
+* resource/dyn_record: Ignore trailing dot in FQDN [GH-13]
 
 ## 0.1.0 (June 20, 2017)
 

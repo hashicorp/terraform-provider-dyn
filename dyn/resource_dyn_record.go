@@ -156,6 +156,7 @@ func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*dynect.ConvenientClient)
 
 	record := &dynect.Record{
+		ID:    d.Id(),
 		Name:  d.Get("name").(string),
 		Zone:  d.Get("zone").(string),
 		TTL:   d.Get("ttl").(string),

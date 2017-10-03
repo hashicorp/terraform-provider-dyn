@@ -163,6 +163,30 @@ func TestAccDynRecord_CNAME_trailingDot(t *testing.T) {
 	})
 }
 
+func TestAccDynRecord_CNAME_topLevelDomain(t *testing.T) {
+	var record dynect.Record
+	zone := os.Getenv("DYN_ZONE")
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDynRecordDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: fmt.Sprintf(testAccCheckDynRecordConfig_topLevelDomain, zone),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDynRecordExists("dyn_record.foobar", &record),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "name", "hashicorptest.com"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "type", "A"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "ttl", "90"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "zone", zone),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "value", "127.0.0.1"),
+				),
+			},
+		},
+	})
+}
+
 func testAccCheckDynRecordDestroy(s *terraform.State) error {
 	client := testAccProvider.Meta().(*dynect.ConvenientClient)
 
@@ -303,4 +327,13 @@ resource "dyn_record" "foobar" {
   value = "something.terraform.io"
   type  = "CNAME"
   ttl   = 3600
+}`
+
+const testAccCheckDynRecordConfig_topLevelDomain = `
+resource "dyn_record" "foobar" {
+  zone = "%s"
+  name = ""
+  ttl  = 90
+  type  = "A"
+  value = "127.0.0.1"
 }`

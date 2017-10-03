@@ -211,6 +211,30 @@ func TestAccDynRecord_NS_record(t *testing.T) {
 	})
 }
 
+func TestAccDynRecord_MX_record(t *testing.T) {
+	var record dynect.Record
+	zone := os.Getenv("DYN_ZONE")
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDynRecordDestroy,
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: fmt.Sprintf(testAccCheckDynRecordConfig_MX_record, zone),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDynRecordExists("dyn_record.foobar", &record),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "name", "mail-test"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "type", "MX"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "ttl", "30"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "zone", zone),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "value", "10 mx.terraform.io."),
+				),
+			},
+		},
+	})
+}
+
 func testAccCheckDynRecordDestroy(s *terraform.State) error {
 	client := testAccProvider.Meta().(*dynect.ConvenientClient)
 
@@ -369,4 +393,13 @@ resource "dyn_record" "foobar" {
     type  = "NS"
     ttl   = 3600
     value = "ns.terraform.io"
+}`
+
+const testAccCheckDynRecordConfig_MX_record = `
+resource "dyn_record" "foobar" {
+  zone  = "%s"
+  name  = "mail-test"
+  value = "10 mx.terraform.io"
+  type  = "MX"
+  ttl   = 30
 }`

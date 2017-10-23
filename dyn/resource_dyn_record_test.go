@@ -176,7 +176,7 @@ func TestAccDynRecord_CNAME_topLevelDomain(t *testing.T) {
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_topLevelDomain, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
-					resource.TestCheckResourceAttr("dyn_record.foobar", "name", "hashicorptest.com"),
+					resource.TestCheckResourceAttr("dyn_record.foobar", "name", zone),
 					resource.TestCheckResourceAttr("dyn_record.foobar", "type", "A"),
 					resource.TestCheckResourceAttr("dyn_record.foobar", "ttl", "90"),
 					resource.TestCheckResourceAttr("dyn_record.foobar", "zone", zone),

@@ -18,6 +18,9 @@ func resourceDynRecord() *schema.Resource {
 		Read:   resourceDynRecordRead,
 		Update: resourceDynRecordUpdate,
 		Delete: resourceDynRecordDelete,
+		Importer: &schema.ResourceImporter{
+			State: resourceDynRecordImportState,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"zone": &schema.Schema{

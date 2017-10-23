@@ -39,3 +39,11 @@ The following attributes are exported:
 
 * `id` - The record ID.
 * `fqdn` - The FQDN of the record, built from the `name` and the `zone`.
+
+## Import
+
+Dyn records can be imported using a combination of the `type`, `zone`, `fdqn`, and optionally `id`.
+
+```
+$terraform import dyn_record.record {type}/{zone}/{fqdn}[/{id}]
+```

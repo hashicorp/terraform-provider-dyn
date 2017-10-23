@@ -1,8 +1,8 @@
-## 1.1.0 (Unreleased)
+## 1.1.0 (October 23, 2017)
 
 IMPROVEMENTS:
 
-* resource/dyn_record: Allow importing records [GH-19]
+* resource/dyn_record: Allow importing records ([#19](https://github.com/terraform-providers/terraform-provider-dyn/issues/19))
 
 ## 1.0.0 (October 03, 2017)
 

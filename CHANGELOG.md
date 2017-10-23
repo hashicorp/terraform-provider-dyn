@@ -1,4 +1,9 @@
 ## 1.0.1 (Unreleased)
+
+IMPROVEMENTS:
+
+* resource/dyn_record: Allow importing records [GH-19]
+
 ## 1.0.0 (October 03, 2017)
 
 IMPROVEMENTS:

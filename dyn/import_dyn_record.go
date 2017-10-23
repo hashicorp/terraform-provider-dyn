@@ -16,7 +16,7 @@ func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*
 	values := strings.Split(d.Id(), "/")
 
 	if len(values) != 3 && len(values) != 4 {
-		return nil, fmt.Errorf("invalid id for dyn import provided: %s", d.Id())
+		return nil, fmt.Errorf("invalid id provided, expected format: {type}/{zone}/{fqdn}[/{id}]")
 	}
 
 	recordType := values[0]

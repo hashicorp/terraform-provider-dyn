@@ -138,8 +138,15 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 		Type: d.Get("type").(string),
 	}
 
-	err := client.GetRecord(record)
+	// Check if the ID actually exists
+	err := client.GetRecordID(record)
 	if err != nil {
+		d.SetId("")
+	}
+
+	err = client.GetRecord(record)
+	if err != nil {
+		d.SetId("") // If record is removed from the server this will help enforcing the terraform's local state
 		return fmt.Errorf("Couldn't find Dyn record: %s", err)
 	}
 

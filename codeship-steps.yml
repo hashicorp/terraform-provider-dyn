@@ -4,4 +4,4 @@
 
 - name: publish artifacts
   service: awsdeployment
-  command: /scripts/publish.sh /artifacts
+  command: ci/scripts/publish.sh /artifacts

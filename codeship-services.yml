@@ -1,0 +1,24 @@
+app:
+  build:
+    context: .
+    dockerfile: ./ci/Dockerfile.codeship
+    args:
+        GOPATH: /go
+        PROJECT_DIR: /go/src/github.com/splunkcloud/terraform-provider-dyn
+  cached: true
+  volumes_from:
+    - data
+
+awsdeployment:
+  image: codeship/aws-deployment
+  encrypted_env_file: ci/aws.env.encrypted
+  environment:
+    - AWS_DEFAULT_REGION=us-west-2
+  volumes_from:
+    - data
+
+data:
+  image: busybox
+  volumes:
+    - ./tmp/artifacts:/artifacts
+    - ./ci:/ci

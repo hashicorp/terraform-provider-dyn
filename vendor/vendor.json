@@ -639,5 +639,5 @@
 			"versionExact": "v1.6.1"
 		}
 	],
-	"rootPath": "github.com/SplunkCloud/terraform-provider-dyn"
+	"rootPath": "github.com/splunkcloud/terraform-provider-dyn"
 }

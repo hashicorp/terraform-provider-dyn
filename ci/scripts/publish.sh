@@ -1,3 +1,5 @@
+#! /bin/bash
+
 if [ -z "$CI_NAME" ]; then
     echo "Skipping publishing since not running in CI"
     exit 0

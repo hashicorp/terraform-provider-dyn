@@ -1,0 +1,16 @@
+FROM golang:1.9.3 as builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		zip && rm -rf /var/lib/apt/lists/*
+
+ARG DEP_VERSION=0.4.1
+ARG PROJECT_DIR
+ARG GOPATH=/go
+
+ENV GOPATH=$GOPATH
+
+RUN mkdir -p $PROJECT_DIR
+WORKDIR $PROJECT_DIR
+
+# Now copy the rest of the files to the container
+COPY . ./

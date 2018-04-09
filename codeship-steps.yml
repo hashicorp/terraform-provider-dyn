@@ -1,0 +1,7 @@
+- name: package provider
+  service: app
+  command: ci/scripts/build.sh /artifacts
+
+- name: publish artifacts
+  service: awsdeployment
+  command: ci/scripts/publish.sh /artifacts

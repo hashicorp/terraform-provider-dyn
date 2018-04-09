@@ -23,7 +23,8 @@ website/node_modules
 *.iml
 *.test
 *.iml
-
+*.env
+codeship.aes
 website/vendor
 
 # Test exclusions

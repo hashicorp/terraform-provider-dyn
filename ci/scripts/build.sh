@@ -21,6 +21,6 @@ echo "Building ${project_name} in ${build_dest}"
 
 go build -o ${build_dest}/${project_name}
 
-echo "Compressing $build_dest/$git_branch-$short_git_commit.zip"
+echo "Compressing $build_dest/$git_branch-$short_git_commit.tar.gz"
 cd $build_dest
-zip $build_dest/$git_branch-$short_git_commit.zip $project_name
+tar -zcvf $build_dest/$git_branch-$short_git_commit.tar.gz $project_name

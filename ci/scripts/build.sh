@@ -11,7 +11,7 @@ short_git_commit=$(git rev-parse --short HEAD)
     # find what type of service it is
       # makes sure the build are created in
     # /artifacts/{lambda,service}/{service-name} format
-build_dest="${artifacts_dir}/${project_name}"
+build_dest="${artifacts_dir}/${project_name}/$git_branch"
     # ensure the directory exists
 mkdir -p $build_dest
     # build the binary

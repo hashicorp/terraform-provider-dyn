@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/hashicorp/terraform/plugin"
-	"github.com/terraform-providers/terraform-provider-dyn/dyn"
+	"github.com/splunkcloud/terraform-provider-dyn/dyn"
 )
 
 func main() {

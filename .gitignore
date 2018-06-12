@@ -23,8 +23,10 @@ website/node_modules
 *.iml
 *.test
 *.iml
-
+*.env
+codeship.aes
 website/vendor
+tmp
 
 # Test exclusions
 !command/test-fixtures/**/*.tfstate

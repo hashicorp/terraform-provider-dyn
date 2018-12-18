@@ -9,14 +9,20 @@ import (
 )
 
 func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	client, err := meta.(*Config).Client()
+	if err != nil {
+		return nil, err
+	}
+
 	results := make([]*schema.ResourceData, 1, 1)
-
-	client := meta.(*dynect.ConvenientClient)
-
 	values := strings.Split(d.Id(), "/")
 
 	if len(values) != 3 && len(values) != 4 {
-		return nil, fmt.Errorf("invalid id provided, expected format: {type}/{zone}/{fqdn}[/{id}]")
+		err = fmt.Errorf("invalid id provided, expected format: {type}/{zone}/{fqdn}[/{id}]")
+		err = logoutClientIfError(client, err, "%s")
+		return nil, err
 	}
 
 	recordType := values[0]
@@ -43,12 +49,12 @@ func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*
 	// If we already have the record ID, use it for the lookup
 	if record.ID == "" {
 		err := client.GetRecordID(record)
-		if err != nil {
+		if err = logoutClientIfError(client, err, "%s"); err != nil {
 			return nil, err
 		}
 	} else {
 		err := client.GetRecord(record)
-		if err != nil {
+		if err = logoutClientIfError(client, err, "%s"); err != nil {
 			return nil, err
 		}
 	}
@@ -61,6 +67,10 @@ func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*
 	d.Set("fqdn", record.FQDN)
 	d.Set("ttl", record.TTL)
 	results[0] = d
+
+	if err = client.Logout(); err != nil {
+		return nil, err
+	}
 
 	return results, nil
 }

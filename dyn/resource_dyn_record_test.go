@@ -20,7 +20,7 @@ func TestAccDynRecord_Basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_basic, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -47,7 +47,7 @@ func TestAccDynRecord_noTTL(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_noTTL, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -71,7 +71,7 @@ func TestAccDynRecord_Updated(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_basic, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -84,7 +84,7 @@ func TestAccDynRecord_Updated(t *testing.T) {
 						"dyn_record.foobar", "value", "192.168.0.10"),
 				),
 			},
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_new_value, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -110,7 +110,7 @@ func TestAccDynRecord_Multiple(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_multiple, zone, zone, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar1", &record),
@@ -148,7 +148,7 @@ func TestAccDynRecord_CNAME_trailingDot(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_CNAME_trailingDot, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -172,7 +172,7 @@ func TestAccDynRecord_CNAME_topLevelDomain(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_topLevelDomain, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -196,7 +196,7 @@ func TestAccDynRecord_NS_record(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_NS_record, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),
@@ -220,7 +220,7 @@ func TestAccDynRecord_MX_record(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_MX_record, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDynRecordExists("dyn_record.foobar", &record),

@@ -31,10 +31,10 @@ func TestAccImportDynRecord_A(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_basic, zone),
 			},
-			resource.TestStep{
+			{
 				ResourceName:        resourceName,
 				ImportState:         true,
 				ImportStateIdPrefix: fmt.Sprintf("A/%s/terraform.%s/", zone, zone),
@@ -68,10 +68,10 @@ func TestAccImportDynRecord_MX(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDynRecordDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: fmt.Sprintf(testAccCheckDynRecordConfig_MX_record, zone),
 			},
-			resource.TestStep{
+			{
 				ResourceName:        resourceName,
 				ImportState:         true,
 				ImportStateIdPrefix: fmt.Sprintf("MX/%s/terraform.%s/", zone, zone),

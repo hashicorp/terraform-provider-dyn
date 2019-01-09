@@ -23,13 +23,13 @@ func resourceDynRecord() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"zone": &schema.Schema{
+			"zone": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
@@ -44,18 +44,18 @@ func resourceDynRecord() *schema.Resource {
 				},
 			},
 
-			"fqdn": &schema.Schema{
+			"fqdn": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
 
-			"type": &schema.Schema{
+			"type": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 
-			"value": &schema.Schema{
+			"value": {
 				Type:     schema.TypeString,
 				Required: true,
 				DiffSuppressFunc: func(k, oldV, newV string, d *schema.ResourceData) bool {
@@ -74,7 +74,7 @@ func resourceDynRecord() *schema.Resource {
 				},
 			},
 
-			"ttl": &schema.Schema{
+			"ttl": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,

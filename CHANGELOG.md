@@ -1,3 +1,8 @@
+## 1.12.0 (July 11, 2019)
+IMPROVEMENTS:
+
+* Upgraded for terraform 12
+
 ## 1.1.1 (Unreleased)
 ## 1.1.0 (October 23, 2017)
 

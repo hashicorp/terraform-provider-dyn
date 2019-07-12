@@ -1,10 +1,9 @@
-## 1.12.0 (Unreleased)
+## 1.2.0 (Unreleased)
 
 IMPROVEMENTS:
 
 * Update SDK to terraform 12
 
-## 1.1.1 (Unreleased)
 ## 1.1.0 (October 23, 2017)
 
 IMPROVEMENTS:

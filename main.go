@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/Shopify/terraform-provider-dyn/dyn"
 	"github.com/hashicorp/terraform/plugin"
-	"github.com/terraform-providers/terraform-provider-dyn/dyn"
 )
 
 func main() {

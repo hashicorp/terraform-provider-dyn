@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/hashicorp/terraform/helper/logging"
-	"github.com/nesv/go-dynect/dynect"
+	"github.com/Shopify/go-dyn/pkg/dyn"
+	// "github.com/hashicorp/terraform/helper/logging"
+	//"github.com/nesv/go-dynect/dynect"
 )
 
 type Config struct {
@@ -15,13 +16,13 @@ type Config struct {
 }
 
 // Client() returns a new client for accessing dyn.
-func (c *Config) Client() (*dynect.ConvenientClient, error) {
-	client := dynect.NewConvenientClient(c.CustomerName)
-	if logging.IsDebugOrHigher() {
-		client.Verbose(true)
-	}
+func (c *Config) Client() (*dyn.Client, error) {
+	client := dyn.NewClient()
+	// if logging.IsDebugOrHigher() {
+	// client.Verbose(true)
+	// }
 
-	err := client.Login(c.Username, c.Password)
+	err := client.LogIn(c.CustomerName, c.Username, c.Password)
 	if err != nil {
 		return nil, fmt.Errorf("Error setting up Dyn client: %s", err)
 	}

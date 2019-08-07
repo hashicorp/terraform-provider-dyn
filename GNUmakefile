@@ -6,6 +6,7 @@ PKG_NAME=dyn
 default: build
 
 build: fmtcheck
+	#GO111MODULE=on go install
 	go install
 
 test: fmtcheck

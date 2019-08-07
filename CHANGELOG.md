@@ -1,10 +1,4 @@
-## 1.3.0 (Unreleased)
-## 1.2.0 (July 12, 2019)
-
-IMPROVEMENTS:
-
-* Update SDK to terraform 12
-
+## 1.1.1 (Unreleased)
 ## 1.1.0 (October 23, 2017)
 
 IMPROVEMENTS:

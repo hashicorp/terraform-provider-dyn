@@ -45,5 +45,5 @@ The following attributes are exported:
 Dyn records can be imported using a combination of the `type`, `zone`, `fdqn`, and optionally `id`.
 
 ```
-$terraform import dyn_record.record {type}/{zone}/{fqdn}[/{id}]
+$ terraform import dyn_record.record {type}/{zone}/{fqdn}[/{id}]
 ```

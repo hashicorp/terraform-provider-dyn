@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/nesv/go-dynect/dynect"
 )
@@ -83,10 +84,25 @@ func resourceDynRecord() *schema.Resource {
 	}
 }
 
+func logoutClientIfError(client *dynect.ConvenientClient, err error, msg string) error {
+	if err != nil {
+		var result error
+		result = multierror.Append(err)
+		if lerr := client.Logout(); err != nil {
+			result = multierror.Append(lerr)
+		}
+		return fmt.Errorf(msg, result)
+	}
+	return nil
+}
+
 func resourceDynRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
-
-	client := meta.(*dynect.ConvenientClient)
+	client, err := meta.(*Config).Client()
+	if err != nil {
+		mutex.Unlock()
+		return err
+	}
 
 	record := &dynect.Record{
 		Name:  d.Get("name").(string),
@@ -98,36 +114,45 @@ func resourceDynRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Dyn record create configuration: %#v", record)
 
 	// create the record
-	err := client.CreateRecord(record)
-	if err != nil {
+	err = client.CreateRecord(record)
+	if err = logoutClientIfError(client, err, "Failed to create Dyn record: %s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("Failed to create Dyn record: %s", err)
+		return err
 	}
 
 	// publish the zone
 	err = client.PublishZone(record.Zone)
-	if err != nil {
+	if err = logoutClientIfError(client, err, "Failed to publish Dyn zone: %s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("Failed to publish Dyn zone: %s", err)
+		return err
 	}
 
 	// get the record ID
 	err = client.GetRecordID(record)
-	if err != nil {
+	if err = logoutClientIfError(client, err, "%s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("%s", err)
+		return err
 	}
 	d.SetId(record.ID)
 
+	// logout client
+	if err = client.Logout(); err != nil {
+		mutex.Unlock()
+		return err
+	}
+
 	mutex.Unlock()
+
 	return resourceDynRecordRead(d, meta)
 }
 
 func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
-
-	client := meta.(*dynect.ConvenientClient)
+	client, err := meta.(*Config).Client()
+	if err != nil {
+		return err
+	}
 
 	record := &dynect.Record{
 		ID:   d.Id(),
@@ -138,9 +163,9 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 		Type: d.Get("type").(string),
 	}
 
-	err := client.GetRecord(record)
-	if err != nil {
-		return fmt.Errorf("Couldn't find Dyn record: %s", err)
+	err = client.GetRecord(record)
+	if err = logoutClientIfError(client, err, "Couldn't find Dyn record: %s"); err != nil {
+		return err
 	}
 
 	d.Set("zone", record.Zone)
@@ -150,13 +175,21 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("ttl", record.TTL)
 	d.Set("value", record.Value)
 
+	// logout client
+	if err = client.Logout(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
-
-	client := meta.(*dynect.ConvenientClient)
+	client, err := meta.(*Config).Client()
+	if err != nil {
+		mutex.Unlock()
+		return err
+	}
 
 	record := &dynect.Record{
 		ID:    d.Id(),
@@ -169,36 +202,45 @@ func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Dyn record update configuration: %#v", record)
 
 	// update the record
-	err := client.UpdateRecord(record)
-	if err != nil {
+	err = client.UpdateRecord(record)
+	if err = logoutClientIfError(client, err, "Failed to update Dyn record: %s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("Failed to update Dyn record: %s", err)
+		return err
 	}
 
 	// publish the zone
 	err = client.PublishZone(record.Zone)
-	if err != nil {
+	if err = logoutClientIfError(client, err, "Failed to publish Dyn zone: %s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("Failed to publish Dyn zone: %s", err)
+		return err
 	}
 
 	// get the record ID
 	err = client.GetRecordID(record)
-	if err != nil {
+	if err = logoutClientIfError(client, err, "%s"); err != nil {
 		mutex.Unlock()
-		return fmt.Errorf("%s", err)
+		return err
 	}
 	d.SetId(record.ID)
 
+	// logout client
+	if err = client.Logout(); err != nil {
+		mutex.Unlock()
+		return err
+	}
+
 	mutex.Unlock()
+
 	return resourceDynRecordRead(d, meta)
 }
 
 func resourceDynRecordDelete(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
-
-	client := meta.(*dynect.ConvenientClient)
+	client, err := meta.(*Config).Client()
+	if err != nil {
+		return err
+	}
 
 	record := &dynect.Record{
 		ID:   d.Id(),
@@ -211,15 +253,15 @@ func resourceDynRecordDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[INFO] Deleting Dyn record: %s, %s", record.FQDN, record.ID)
 
 	// delete the record
-	err := client.DeleteRecord(record)
-	if err != nil {
-		return fmt.Errorf("Failed to delete Dyn record: %s", err)
+	err = client.DeleteRecord(record)
+	if err = logoutClientIfError(client, err, "Failed to delete Dyn record: %s"); err != nil {
+		return err
 	}
 
 	// publish the zone
 	err = client.PublishZone(record.Zone)
-	if err != nil {
-		return fmt.Errorf("Failed to publish Dyn zone: %s", err)
+	if err = logoutClientIfError(client, err, "Failed to publish dyn zone: %s"); err != nil {
+		return err
 	}
 
 	return nil
